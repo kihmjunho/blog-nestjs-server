@@ -13,5 +13,5 @@ export interface UserRepository {
   changeUserInformation(
     email: string,
     changeInformationRequestDto: ChangeInformationRequestDto,
-  ): Promise<any>;
+  ): Promise<void>;
 }
