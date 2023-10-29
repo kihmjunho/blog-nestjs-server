@@ -16,6 +16,7 @@ import { JwtAuthGuard } from '../../config/jwt/jwtAuth.guard';
 
 import { ChangePasswordRequestDto } from './dto/changePassword.request.dto';
 import { ChangeInformationRequestDto } from './dto/changeInformation.request.dto';
+import { GetUserResponseDto } from './dto/getUser.response.dto';
 
 @Controller('users')
 export class UserController {
@@ -31,6 +32,14 @@ export class UserController {
   @HttpCode(200)
   public async loginUser(@Body() loginUserRequestSto: LoginUserRequestDto) {
     return await this.userService.login(loginUserRequestSto);
+  }
+
+  @Get('get-user')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  async getUser(@Request() req: any) {
+    const { user } = req;
+    return new GetUserResponseDto(user);
   }
 
   @Put('change-password')
