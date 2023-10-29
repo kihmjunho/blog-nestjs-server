@@ -20,6 +20,10 @@ export class User extends IdAndDate {
     this.password = await bcrypt.hash(this.password, salt);
   }
 
+  async comparePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
+
   @Column()
   nickname: string;
 
