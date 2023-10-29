@@ -13,8 +13,9 @@ import { UserService } from './user.service';
 import { SignupUserRequestDto } from './dto/signupUser.request.dto';
 import { LoginUserRequestDto } from './dto/loginUser.request.dto';
 import { JwtAuthGuard } from '../../config/jwt/jwtAuth.guard';
-import { OwnerAuthGuard } from '../../config/jwt/ownerAuth.guard';
+
 import { ChangePasswordRequestDto } from './dto/changePassword.request.dto';
+import { ChangeInformationRequestDto } from './dto/changeInformation.request.dto';
 
 @Controller('users')
 export class UserController {
@@ -43,6 +44,20 @@ export class UserController {
     return await this.userService.changePassword(
       email,
       changePasswordRequestDto,
+    );
+  }
+
+  @Put('change-user-information')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  public async changeUserInformation(
+    @Request() req: any,
+    @Body() changeInformationRequestDto: ChangeInformationRequestDto,
+  ) {
+    const { email } = req.user;
+    return await this.userService.changeUserInformation(
+      email,
+      changeInformationRequestDto,
     );
   }
 }

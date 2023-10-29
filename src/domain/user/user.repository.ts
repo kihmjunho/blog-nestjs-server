@@ -1,7 +1,8 @@
 import { User } from './entities/user.entity';
+import { ChangeInformationRequestDto } from './dto/changeInformation.request.dto';
 
 export interface UserRepository {
-  findByEmail(email: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User>;
 
   duplicateEmail(email: string): Promise<void>;
 
@@ -9,5 +10,8 @@ export interface UserRepository {
 
   getAccessToken(user: User): Promise<{ accessToken: string }>;
 
-  // changePassword(user: User): Promise<any>;
+  changeUserInformation(
+    email: string,
+    changeInformationRequestDto: ChangeInformationRequestDto,
+  ): Promise<any>;
 }

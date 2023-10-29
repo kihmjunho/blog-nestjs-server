@@ -1,9 +1,14 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UserRepository } from './user.repository';
 import { JwtService } from '@nestjs/jwt';
+import { ChangeInformationRequestDto } from './dto/changeInformation.request.dto';
 
 @Injectable()
 export class UserTypeormRepository implements UserRepository {
@@ -13,10 +18,16 @@ export class UserTypeormRepository implements UserRepository {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async findByEmail(email: string): Promise<User | null> {
-    return await this.userRepository.findOne({
+  public async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
       where: { email },
     });
+
+    if (!user) {
+      throw new NotFoundException('not found user', 'NOT_FOUND_USER');
+    }
+
+    return user;
   }
 
   public async duplicateEmail(email: string): Promise<void> {
@@ -44,7 +55,16 @@ export class UserTypeormRepository implements UserRepository {
     return { accessToken };
   }
 
-  // async changePassword(user: User) {
-  //   async;
-  // }
+  async changeUserInformation(
+    email: string,
+    changeInformationRequestDto: ChangeInformationRequestDto,
+  ) {
+    const { nickname } = changeInformationRequestDto;
+    await this.userRepository
+      .createQueryBuilder()
+      .update(User)
+      .set({ nickname })
+      .where('email = :email', { email })
+      .execute();
+  }
 }
