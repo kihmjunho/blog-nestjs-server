@@ -10,13 +10,14 @@ import {
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
+
 import { SignupUserRequestDto } from './dto/signupUser.request.dto';
 import { LoginUserRequestDto } from './dto/loginUser.request.dto';
-import { JwtAuthGuard } from '../../config/jwt/jwtAuth.guard';
-
 import { ChangePasswordRequestDto } from './dto/changePassword.request.dto';
 import { ChangeInformationRequestDto } from './dto/changeInformation.request.dto';
 import { GetUserResponseDto } from './dto/getUser.response.dto';
+
+import { JwtAuthGuard } from '../../config/jwt/jwtAuth.guard';
 
 @Controller('users')
 export class UserController {
