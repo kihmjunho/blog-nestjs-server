@@ -8,6 +8,7 @@ import {
   Request,
   Put,
 } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
 
 import { UserService } from './user.service';
 
@@ -16,6 +17,8 @@ import { LoginUserRequestDto } from './dto/loginUser.request.dto';
 import { ChangePasswordRequestDto } from './dto/changePassword.request.dto';
 import { ChangeInformationRequestDto } from './dto/changeInformation.request.dto';
 import { GetUserResponseDto } from './dto/getUser.response.dto';
+
+import { User } from './entities/user.entity';
 
 import { JwtAuthGuard } from '../../config/jwt/jwtAuth.guard';
 
@@ -38,7 +41,7 @@ export class UserController {
   @Get('get-user')
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
-  async getUser(@Request() req: any) {
+  async getUser(@Request() req: ExpressRequest & { user: User }) {
     const { user } = req;
     return new GetUserResponseDto(user);
   }
@@ -47,7 +50,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   public async changePassword(
-    @Request() req: any,
+    @Request() req: ExpressRequest & { user: User },
     @Body() changePasswordRequestDto: ChangePasswordRequestDto,
   ) {
     const { email } = req.user;
@@ -61,7 +64,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   public async changeUserInformation(
-    @Request() req: any,
+    @Request() req: ExpressRequest & { user: User },
     @Body() changeInformationRequestDto: ChangeInformationRequestDto,
   ) {
     const { email } = req.user;

@@ -18,10 +18,13 @@ export class UserTypeormRepository implements UserRepository {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOne({
+  public async findUserByEmail(email: string) {
+    return await this.userRepository.findOne({
       where: { email },
     });
+  }
+  public async returnUserByEmail(email: string): Promise<User> {
+    const user = await this.findUserByEmail(email);
 
     if (!user) {
       throw new NotFoundException('not found user', 'NOT_FOUND_USER');
@@ -31,7 +34,7 @@ export class UserTypeormRepository implements UserRepository {
   }
 
   public async duplicateEmail(email: string): Promise<void> {
-    const existingUser = await this.findByEmail(email);
+    const existingUser = await this.findUserByEmail(email);
 
     if (existingUser) {
       throw new ConflictException(
@@ -55,15 +58,19 @@ export class UserTypeormRepository implements UserRepository {
     return { accessToken };
   }
 
+  async changePassword(user: User) {
+    return await this.userRepository.manager.transaction(async (manager) => {
+      await manager.save(user);
+    });
+  }
   async changeUserInformation(
     email: string,
     changeInformationRequestDto: ChangeInformationRequestDto,
   ) {
-    const { nickname } = changeInformationRequestDto;
     await this.userRepository
       .createQueryBuilder()
       .update(User)
-      .set({ nickname })
+      .set(changeInformationRequestDto)
       .where('email = :email', { email })
       .execute();
   }

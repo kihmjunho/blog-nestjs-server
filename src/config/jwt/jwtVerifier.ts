@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 
-export const jwtVerifier = (err, info) => {
+export const jwtVerifier = (err: any, info: { message: string }) => {
   if (info?.message === 'No auth token') {
     throw new UnauthorizedException(
       'Header에 토큰을 넣어야 합니다.',

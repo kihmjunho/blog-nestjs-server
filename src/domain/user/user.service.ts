@@ -16,13 +16,15 @@ export class UserService {
   ) {}
 
   async signup(signupUserRequestDto: SignupUserRequestDto) {
-    const { email, password, nickname } = signupUserRequestDto;
+    console.log('hh');
+    const { email, password, nickname, phoneNumber } = signupUserRequestDto;
     await this.userRepository.duplicateEmail(email);
 
     const user = new User({
       email,
       password,
       nickname,
+      phoneNumber,
       role: UserRole.NORMAL,
     });
 
@@ -31,7 +33,7 @@ export class UserService {
 
   async login(loginUserRequestDto: LoginUserRequestDto) {
     const { email, password } = loginUserRequestDto;
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.returnUserByEmail(email);
 
     const passwordsMatch = await user.comparePassword(password);
     if (!passwordsMatch) {
@@ -48,19 +50,19 @@ export class UserService {
     email: string,
     changePasswordRequestDto: ChangePasswordRequestDto,
   ) {
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.returnUserByEmail(email);
 
     const { password } = changePasswordRequestDto;
     user.password = password;
 
-    return this.userRepository.save(user);
+    await this.userRepository.changePassword(user);
   }
 
   async changeUserInformation(
     email: string,
     changeInformationRequestDto: ChangeInformationRequestDto,
   ) {
-    await this.userRepository.findByEmail(email);
+    await this.userRepository.returnUserByEmail(email);
 
     return this.userRepository.changeUserInformation(
       email,

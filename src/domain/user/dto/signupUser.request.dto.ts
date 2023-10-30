@@ -9,4 +9,7 @@ export class SignupUserRequestDto {
 
   @IsNotEmpty()
   nickname: string;
+
+  @IsNotEmpty()
+  phoneNumber: string;
 }

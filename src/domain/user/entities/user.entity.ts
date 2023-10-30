@@ -28,12 +28,16 @@ export class User extends IdAndDate {
   nickname: string;
 
   @Column()
+  phoneNumber: string;
+
+  @Column()
   role: UserRole;
 
   constructor(params: {
     email: string;
     password: string;
     nickname: string;
+    phoneNumber: string;
     role: UserRole;
   }) {
     super();
@@ -41,6 +45,7 @@ export class User extends IdAndDate {
       this.email = params.email;
       this.password = params.password;
       this.nickname = params.nickname;
+      this.phoneNumber = params.phoneNumber;
       this.role = params.role;
     }
   }
