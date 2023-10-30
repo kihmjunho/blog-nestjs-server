@@ -1,5 +1,5 @@
-import { CreateContentRequestDto } from './dto/createContent.request.dto';
+import { Content } from './entities/content.entity';
 
 export interface ContentRepository {
-  save(createContentRequestDto: CreateContentRequestDto): any;
+  save(content: Content): any;
 }

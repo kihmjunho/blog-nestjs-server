@@ -1,4 +1,10 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { USER_REPOSITORY } from '../../common/constants/token.constant';
 import { SignupUserRequestDto } from './dto/signupUser.request.dto';
 import { UserRepository } from './user.repository';
@@ -18,14 +24,28 @@ export class UserService {
   async signup(signupUserRequestDto: SignupUserRequestDto) {
     console.log('hh');
     const { email, password, nickname, phoneNumber } = signupUserRequestDto;
-    await this.userRepository.duplicateEmail(email);
+    const foundUser = await this.userRepository.findUserByEmail(email);
 
-    const user = new User({
+    if (foundUser) {
+      throw new ConflictException(
+        '중복된 이메일입니다',
+        'THIS_EMAIL_IS_ALREADY_DUPLICATED',
+      );
+    }
+
+    // const user = new User({
+    //   email,
+    //   password,
+    //   nickname,
+    //   phoneNumber,
+    //   role: UserRole.NORMAL,
+    // });
+    // await user.convertToHashedPassword();
+    const user = await User.createNormalUser({
       email,
       password,
       nickname,
       phoneNumber,
-      role: UserRole.NORMAL,
     });
 
     return await this.userRepository.save(user);
@@ -33,7 +53,10 @@ export class UserService {
 
   async login(loginUserRequestDto: LoginUserRequestDto) {
     const { email, password } = loginUserRequestDto;
-    const user = await this.userRepository.returnUserByEmail(email);
+    const user = await this.userRepository.findUserByEmail(email);
+    if (!user) {
+      throw new NotFoundException('not found user', 'NOT_FOUND_USER');
+    }
 
     const passwordsMatch = await user.comparePassword(password);
     if (!passwordsMatch) {
@@ -50,23 +73,33 @@ export class UserService {
     email: string,
     changePasswordRequestDto: ChangePasswordRequestDto,
   ) {
-    const user = await this.userRepository.returnUserByEmail(email);
+    const user = await this.userRepository.findUserByEmail(email);
+
+    this.validateExistingUser(user);
 
     const { password } = changePasswordRequestDto;
-    user.password = password;
+    user!.changePassword(password);
 
-    await this.userRepository.changePassword(user);
+    await this.userRepository.save(user!);
   }
 
   async changeUserInformation(
     email: string,
     changeInformationRequestDto: ChangeInformationRequestDto,
   ) {
-    await this.userRepository.returnUserByEmail(email);
+    const { phoneNumber, nickname } = changeInformationRequestDto;
+    const user = await this.userRepository.findUserByEmail(email);
 
-    return this.userRepository.changeUserInformation(
-      email,
-      changeInformationRequestDto,
-    );
+    this.validateExistingUser(user);
+
+    user!.nickname = nickname;
+    user!.phoneNumber = phoneNumber;
+    return await this.userRepository.save(user!);
+  }
+
+  private validateExistingUser(user: User | null) {
+    if (!user) {
+      throw new NotFoundException('not found user', 'NOT_FOUND_USER');
+    }
   }
 }

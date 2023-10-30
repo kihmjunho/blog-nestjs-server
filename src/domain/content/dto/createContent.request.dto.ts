@@ -9,4 +9,7 @@ export class CreateContentRequestDto {
 
   @IsNotEmpty()
   categoryId: string;
+
+  @IsNotEmpty()
+  hashtagNames: string[];
 }
