@@ -1,7 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { IdAndDate } from '../../../common/entities/idAndDate.entity';
 
 import * as bcrypt from 'bcrypt';
+
 import { UserRole } from '../user.role';
 
 @Entity()
@@ -12,9 +13,7 @@ export class User extends IdAndDate {
   @Column()
   password: string;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  async hashPassword(): Promise<void> {
+  async convertToHashedPassword(): Promise<void> {
     const saltRepeatCount = 10;
     const salt = await bcrypt.genSalt(saltRepeatCount);
     this.password = await bcrypt.hash(this.password, salt);
@@ -22,6 +21,11 @@ export class User extends IdAndDate {
 
   async comparePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
+  }
+
+  async changePassword(password: string) {
+    this.password = password;
+    await this.convertToHashedPassword();
   }
 
   @Column()
@@ -48,5 +52,23 @@ export class User extends IdAndDate {
       this.phoneNumber = params.phoneNumber;
       this.role = params.role;
     }
+  }
+
+  public static async createNormalUser(params: {
+    email: string;
+    password: string;
+    nickname: string;
+    phoneNumber: string;
+  }) {
+    const { email, password, nickname, phoneNumber } = params;
+    const user = new User({
+      email,
+      password,
+      nickname,
+      phoneNumber,
+      role: UserRole.NORMAL,
+    });
+    await user.convertToHashedPassword();
+    return user;
   }
 }

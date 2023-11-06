@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 
-import { AppConfigModule } from './config/appConfig.module';
-import { DatabaseModule } from './config/database.module';
+import { AppConfigModule } from './common/config/appConfig.module';
+import { DatabaseModule } from './common/config/database.module';
 import { UserModule } from './domain/user/user.module';
-import { JwtAuthModule } from './config/jwt/jwtAuth.mudule';
+import { JwtAuthModule } from './common/config/jwt/jwtAuth.mudule';
 import { CategoryModule } from './domain/category/category.module';
+import { ContentModule } from './domain/content/content.module';
+import { HashtagModule } from './domain/hashtag/hashtag.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { CategoryModule } from './domain/category/category.module';
     UserModule,
     JwtAuthModule,
     CategoryModule,
+    ContentModule,
+    HashtagModule,
   ],
   controllers: [],
   providers: [],

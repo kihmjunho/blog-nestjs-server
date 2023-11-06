@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToOne, OneToMany } from 'typeorm';
 
 import { IdAndDate } from '../../../common/entities/idAndDate.entity';
 import { Category } from '../../category/entities/category.entity';
+import { ContentToHashtag } from './contentToHashtag.entity';
 
 @Entity()
 export class Content extends IdAndDate {
@@ -19,4 +20,11 @@ export class Content extends IdAndDate {
 
   @Column()
   categoryId: string;
+
+  @OneToMany(
+    () => ContentToHashtag,
+    (contentToHashtag) => contentToHashtag.content,
+  )
+  @JoinTable()
+  contentToHashtags: ContentToHashtag[];
 }

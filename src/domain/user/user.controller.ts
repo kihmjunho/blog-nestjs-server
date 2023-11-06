@@ -6,7 +6,7 @@ import {
   Post,
   UseGuards,
   Request,
-  Put,
+  Patch,
 } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
 
@@ -20,7 +20,7 @@ import { GetUserResponseDto } from './dto/getUser.response.dto';
 
 import { User } from './entities/user.entity';
 
-import { JwtAuthGuard } from '../../config/jwt/jwtAuth.guard';
+import { JwtAuthGuard } from '../../common/config/jwt/jwtAuth.guard';
 
 @Controller('users')
 export class UserController {
@@ -38,7 +38,7 @@ export class UserController {
     return await this.userService.login(loginUserRequestSto);
   }
 
-  @Get('get-user')
+  @Get()
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   async getUser(@Request() req: ExpressRequest & { user: User }) {
@@ -46,7 +46,7 @@ export class UserController {
     return new GetUserResponseDto(user);
   }
 
-  @Put('change-password')
+  @Patch('password')
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   public async changePassword(
@@ -60,7 +60,7 @@ export class UserController {
     );
   }
 
-  @Put('change-user-information')
+  @Patch('information')
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   public async changeUserInformation(

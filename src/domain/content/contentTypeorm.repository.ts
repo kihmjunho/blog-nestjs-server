@@ -12,7 +12,17 @@ export class ContentTypeormRepository implements ContentRepository {
     private readonly contentRepository: Repository<Content>,
   ) {}
 
-  async save(content: Content) {
+  async save(content: Content): Promise<Content> {
     return await this.contentRepository.save(content);
+  }
+
+  async getAll() {
+    return await this.contentRepository.find({
+      relations: {
+        contentToHashtags: {
+          hashtag: true,
+        },
+      },
+    });
   }
 }

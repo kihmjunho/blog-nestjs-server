@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { UserRole } from '../../domain/user/user.role';
+import { UserRole } from '../../../domain/user/user.role';
 import { jwtVerifier } from './jwtVerifier';
 
 @Injectable()

@@ -6,7 +6,7 @@ import {
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../domain/user/entities/user.entity';
+import { User } from '../../../domain/user/entities/user.entity';
 import { Repository } from 'typeorm';
 // import { UserRole } from '../../user/userRole';
 import { ConfigService } from '@nestjs/config';
