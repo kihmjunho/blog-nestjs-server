@@ -17,7 +17,7 @@ jobs:
           script: |
             cd blog-nestjs-server
             git pull origin jscode
-            npm i
-            npm run build
+            sudo npm i
+            sudo npm run build
             sudo pm2 kill
             sudo pm2 start dist/main.js
