@@ -41,7 +41,7 @@ export class UserService {
     });
 
     // return await this.userRepository.save(user);
-    return 'testtesttest';
+    return '돼라돼라돼라 plaese';
   }
 
   async login(loginUserRequestDto: LoginUserRequestDto) {

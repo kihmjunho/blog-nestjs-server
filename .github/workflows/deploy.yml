@@ -19,4 +19,5 @@ jobs:
             git pull origin jscode
             npm i
             npm run build
-            pm2 reload 0
+            pm2 kill
+            pm2 start dist/main.js
