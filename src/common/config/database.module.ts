@@ -19,7 +19,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
           username: configService.get<string>('DB_USER'),
           password: configService.get<string>('DB_PASSWORD'),
           database: configService.get<string>('DB_NAME'),
-          entities: [`dist/**/*.entity{.ts,.js}`],
+          autoLoadEntities: true,
           synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
           namingStrategy: new SnakeNamingStrategy(),
           logging: configService.get<boolean>('DB_LOGGING'),

@@ -12,6 +12,7 @@ export class UserTypeormRepository implements UserRepository {
   ) {}
 
   public async findUserByEmail(email: string) {
+    console.log(this.userRepository);
     return await this.userRepository.findOne({
       where: { email },
     });
