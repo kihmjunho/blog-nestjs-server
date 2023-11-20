@@ -33,14 +33,15 @@ export class UserService {
       );
     }
 
-    const user = await User.createNormalUser({
+    await User.createNormalUser({
       email,
       password,
       nickname,
       phoneNumber,
     });
 
-    return await this.userRepository.save(user);
+    // return await this.userRepository.save(user);
+    return 'testtesttest';
   }
 
   async login(loginUserRequestDto: LoginUserRequestDto) {

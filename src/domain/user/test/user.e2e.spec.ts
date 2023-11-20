@@ -78,7 +78,7 @@ describe('UserController (e2e)', () => {
         });
       const { body } = response;
       console.log(body);
-
+      e;
       // then
       expect(response.status).toBe(409);
       expect(body.error).toBe('THIS_EMAIL_IS_ALREADY_DUPLICATED');
