@@ -11,9 +11,9 @@ jobs:
       - name: AWS EC2를 SSH로 접속해서 서버 업데이트 시키기
         uses: appleboy/ssh-actions@master
         with:
-          host: {{ secrets.EC2_HOST }}
-          username: {{ secrets.EC2_USERNAME }}
-          key: {{ secrets.EC2_PRIVATE_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             cd blog-nestjs-server
             git pull origin jscode
