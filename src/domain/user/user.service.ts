@@ -70,7 +70,7 @@ export class UserService {
     this.validateExistingUser(user);
 
     const { password } = changePasswordRequestDto;
-    user!.changePassword(password);
+    await user!.changePassword(password);
 
     await this.userRepository.save(user!);
   }

@@ -11,5 +11,8 @@ export class CreateContentRequestDto {
   categoryId: string;
 
   @IsNotEmpty()
+  images: string[];
+
+  @IsNotEmpty()
   hashtagNames: string[];
 }

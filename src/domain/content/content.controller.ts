@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { ContentService } from './content.service';
-import { CreateContentRequestDto } from './dto/createContent.request.dto';
+import { CreateContentRequestDto } from './requestDto/createContent.request.dto';
 // import { Content } from './entities/content.entity';
 
 @Controller('contents')
