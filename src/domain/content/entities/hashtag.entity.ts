@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { IdAndDate } from '../../../common/entities/idAndDate.entity';
-import { ContentToHashtag } from '../../content/entities/contentToHashtag.entity';
+import { ContentToHashtag } from './contentToHashtag.entity';
 
 @Entity()
 export class Hashtag extends IdAndDate {

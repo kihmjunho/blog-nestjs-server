@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Content } from './entities/content.entity';
-import { Hashtag } from '../hashtag/entities/hashtag.entity';
+import { Hashtag } from './entities/hashtag.entity';
 import { ContentToHashtag } from './entities/contentToHashtag.entity';
 import { ContentController } from './content.controller';
 import { ContentService } from './content.service';
@@ -12,7 +12,7 @@ import {
   HASHTAG_REPOSITORY,
 } from '../../common/constants/token.constant';
 import { ContentTypeormRepository } from './contentTypeorm.repository';
-import { HashtagTypeormRepository } from '../hashtag/hashtagTypeorm.repository';
+import { HashtagTypeormRepository } from './hashtagTypeorm.repository';
 import { ContentToHashtagTypeormRepository } from './contentToHashtagTypeorm.repository';
 
 @Module({

@@ -6,7 +6,6 @@ import { UserModule } from './domain/user/user.module';
 import { JwtAuthModule } from './common/config/jwt/jwtAuth.mudule';
 import { CategoryModule } from './domain/category/category.module';
 import { ContentModule } from './domain/content/content.module';
-import { HashtagModule } from './domain/hashtag/hashtag.module';
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { HashtagModule } from './domain/hashtag/hashtag.module';
     JwtAuthModule,
     CategoryModule,
     ContentModule,
-    HashtagModule,
   ],
   controllers: [],
   providers: [],

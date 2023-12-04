@@ -7,8 +7,8 @@ import {
   HASHTAG_REPOSITORY,
 } from '../../common/constants/token.constant';
 import { ContentRepository } from './content.repository';
-import { HashtagRepository } from '../hashtag/hashtag.repository';
-import { Hashtag } from '../hashtag/entities/hashtag.entity';
+import { HashtagRepository } from './hashtag.repository';
+import { Hashtag } from './entities/hashtag.entity';
 import { ContentToHashtag } from './entities/contentToHashtag.entity';
 import { ContentToHashtagRepository } from './contentToHashtag.repository';
 
@@ -35,17 +35,24 @@ export class ContentService {
 
     for (const hashtagName of hashtagNames) {
       let insertHashtag: Hashtag;
+
       const hashtag = await this.hashtagRepository.findOneByName(hashtagName);
+
       if (!hashtag) {
         const newHashtag = new Hashtag();
+
         newHashtag.name = hashtagName;
+
         insertHashtag = await this.hashtagRepository.save(newHashtag);
       } else {
         insertHashtag = hashtag;
       }
+
       const contentToHashtag = new ContentToHashtag();
+
       contentToHashtag.content = savedContent;
       contentToHashtag.hashtag = insertHashtag;
+
       await this.contentToHashtagRepository.save(contentToHashtag);
     }
   }
